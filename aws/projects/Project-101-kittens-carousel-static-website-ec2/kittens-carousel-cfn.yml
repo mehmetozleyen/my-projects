@@ -10,9 +10,9 @@ Description: |
   anywhere. Kittens Carousel Static Website 
   is downloaded from my Public Github repository,
   then deployed on Apache Web Server.
-
+  
 Resources:
-  WebserverSecurityGroup:
+  WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Enable HTTP for Apache Web Server and SSH for secure connection.
@@ -25,29 +25,25 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-  WebserverHost:
+
+  WebServerHost:
     Type: AWS::EC2::Instance
     Properties:
-      
       ImageId: ami-0022f774911c1d690
       InstanceType: t2.micro
-      Ipv6AddressCount: Number
-      Ipv6Addresses:
-        Ipv6Addresses
-      KernelId: "String"
-      KeyName: firstkey
+      KeyName: vincenzo
       SecurityGroupIds:
-        - !Ref WebserverSecurityGroup
+        - !Ref WebServerSecurityGroup
       Tags:
-        - Key:
+        - Key: Name
           Value: !Sub Web Server of ${AWS::StackName} Stack
       UserData: 
-          Fn::Base64:
+        Fn::Base64:
           !Sub |
             #! /bin/bash
             yum update -y
             yum install httpd -y
-            FOLDER="https://raw.githubusercontent.com/mehmetozleyen/my-projects/master/aws/projects/Project-101-kittens-carousel-static-website-ec2/static-web/index.html"
+            FOLDER="https://raw.githubusercontent.com/XXXXXXXX/my-projects/main/aws/projects/Project-101-kittens-carousel-static-website-ec2/static-web"
             cd /var/www/html
             wget $FOLDER/index.html
             wget $FOLDER/cat0.jpg
@@ -55,7 +51,8 @@ Resources:
             wget $FOLDER/cat2.jpg
             wget $FOLDER/cat3.png
             systemctl start httpd
-            systemctl enable httpd
+            systemctl enable httpd      
+
 Outputs:
   WebsiteURL:
     Value: !Sub
